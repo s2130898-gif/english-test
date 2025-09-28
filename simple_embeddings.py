@@ -1,40 +1,51 @@
 """
-TF-IDF ベースの軽量埋め込みモデル
-メモリ効率が高く、Streamlit Cloud無料プランで動作
+DistilBERT ベースのAI埋め込みモデル
+多言語対応（日本語・英語）のディープラーニングモデル
 """
 import numpy as np
 from typing import List
-from sklearn.feature_extraction.text import TfidfVectorizer
+import torch
+from transformers import AutoTokenizer, AutoModel
 
 class SimpleEmbeddings:
-    """TF-IDFを使った軽量埋め込みモデル"""
+    """DistilBERTを使ったAI埋め込みモデル"""
 
     def __init__(self):
-        print("📦 軽量埋め込みモデルを初期化中...")
-        self.vectorizer = TfidfVectorizer(
-            max_features=384,
-            ngram_range=(1, 2),
-            analyzer='char',
-            min_df=1
-        )
-        self.dimension = 384
-        self.fitted = False
-        print("✅ TF-IDF埋め込みモデル (384次元) を初期化しました")
+        print("📦 AI埋め込みモデルをロード中...")
+        print("⚠️ 初回起動時は3-4分かかります...")
+
+        model_name = 'distilbert-base-multilingual-cased'
+
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModel.from_pretrained(model_name)
+
+        self.model.eval()
+
+        self.dimension = 768
+
+        print("✅ DistilBERT多言語モデル (768次元) をロードしました")
+        print("🤖 ディープラーニングによるAI採点が有効です")
 
     def encode(self, texts: List[str]) -> np.ndarray:
-        if not self.fitted:
-            self.vectorizer.fit(texts)
-            self.fitted = True
+        embeddings = []
 
-        embeddings = self.vectorizer.transform(texts).toarray()
+        with torch.no_grad():
+            for text in texts:
+                inputs = self.tokenizer(
+                    text,
+                    return_tensors='pt',
+                    truncation=True,
+                    max_length=512,
+                    padding=True
+                )
 
-        if embeddings.shape[1] < self.dimension:
-            padding = np.zeros((embeddings.shape[0], self.dimension - embeddings.shape[1]))
-            embeddings = np.hstack([embeddings, padding])
-        elif embeddings.shape[1] > self.dimension:
-            embeddings = embeddings[:, :self.dimension]
+                outputs = self.model(**inputs)
 
-        return embeddings
+                embedding = outputs.last_hidden_state[:, 0, :].squeeze().numpy()
+
+                embeddings.append(embedding)
+
+        return np.array(embeddings)
 
     def encode_single(self, text: str) -> List[float]:
         return self.encode([text])[0].tolist()
