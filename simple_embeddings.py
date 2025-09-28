@@ -1,36 +1,23 @@
 """
-シンプルな埋め込みモデル
+Sentence Transformers ベースの埋め込みモデル
+多言語対応（日本語・英語）
 """
-import os
 import numpy as np
 from typing import List
-import hashlib
+from sentence_transformers import SentenceTransformer
 
 class SimpleEmbeddings:
-    """シンプルな埋め込みモデル（デモ用）"""
+    """Sentence Transformersを使った埋め込みモデル"""
 
     def __init__(self):
+        print("📦 埋め込みモデルをロード中...")
+        self.model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
         self.dimension = 384
-        print("シンプル埋め込みモデルを初期化しました")
+        print("✅ 多言語埋め込みモデル (384次元) をロードしました")
 
     def encode(self, texts: List[str]) -> np.ndarray:
-        embeddings = []
-
-        for text in texts:
-            text_hash = hashlib.md5(text.encode()).hexdigest()
-
-            vector = []
-            for i in range(0, len(text_hash), 2):
-                value = int(text_hash[i:i+2], 16) / 255.0
-                vector.append(value)
-
-            while len(vector) < self.dimension:
-                vector.extend(vector[:min(len(vector), self.dimension - len(vector))])
-
-            vector = vector[:self.dimension]
-            embeddings.append(vector)
-
-        return np.array(embeddings)
+        embeddings = self.model.encode(texts, convert_to_numpy=True)
+        return embeddings
 
     def encode_single(self, text: str) -> List[float]:
         return self.encode([text])[0].tolist()
