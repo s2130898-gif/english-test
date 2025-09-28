@@ -110,17 +110,8 @@ class EnglishQuizSystem:
         tokens = self.tokenizer.tokenize(text)
 
         for token in tokens:
-            parts = token.split('\t')
-            if len(parts) < 2:
-                continue
-
-            surface = parts[0]
-            features = parts[1].split(',')
-
-            if len(features) < 1:
-                continue
-
-            pos = features[0]
+            surface = token.surface
+            pos = token.part_of_speech.split(',')[0]
 
             is_excluded_pos = any(ex in pos for ex in excluded_pos)
             is_excluded_word = surface in excluded_words
