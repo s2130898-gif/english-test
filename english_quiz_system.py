@@ -9,6 +9,7 @@ import random
 from difflib import SequenceMatcher
 import numpy as np
 from collections import Counter
+from janome.tokenizer import Tokenizer
 
 from simple_vector_store import SimpleVectorStore
 from simple_embeddings import SimpleEmbeddings
@@ -18,6 +19,7 @@ class EnglishQuizSystem:
     def __init__(self):
         self.vector_store = SimpleVectorStore()
         self.embeddings = SimpleEmbeddings()
+        self.tokenizer = Tokenizer()
         self.current_question = None
         self.score_history = []
 
@@ -90,38 +92,44 @@ class EnglishQuizSystem:
         return SequenceMatcher(None, text1, text2).ratio()
 
     def tokenize_japanese(self, text):
-        text = re.sub(r'[、。！？\s]+', '', text)
+        excluded_pos = {
+            '助詞',
+            '助動詞',
+            '記号',
+            '接続詞',
+            '接頭詞',
+            '非自立'
+        }
 
-        particles = {
-            'は', 'が', 'を', 'に', 'へ', 'と', 'より', 'から', 'まで', 'で',
-            'や', 'の', 'も', 'か', 'な', 'ね', 'よ', 'ぞ', 'さ', 'わ',
-            'ば', 'て', 'し', 'た', 'だ', 'ます', 'です', 'ある', 'いる',
-            'する', 'なる', 'れる', 'られる', 'せる', 'させる'
+        excluded_words = {
+            'です', 'ます', 'である', 'だ', 'た', 'れる', 'られる',
+            'せる', 'させる', 'ない', 'ぬ', 'う', 'よう'
         }
 
         words = []
-        current = ""
-        for char in text:
-            if '\u3040' <= char <= '\u309F' or '\u30A0' <= char <= '\u30FF':
-                current += char
-            elif '\u4E00' <= char <= '\u9FFF':
-                if current:
-                    if current not in particles and len(current) > 1:
-                        words.append(current)
-                    current = ""
-                words.append(char)
-            else:
-                if current:
-                    if current not in particles and len(current) > 1:
-                        words.append(current)
-                    current = ""
-        if current:
-            if current not in particles and len(current) > 1:
-                words.append(current)
+        tokens = self.tokenizer.tokenize(text)
 
-        filtered_words = [w for w in words if w not in particles]
+        for token in tokens:
+            parts = token.split('\t')
+            if len(parts) < 2:
+                continue
 
-        return filtered_words
+            surface = parts[0]
+            features = parts[1].split(',')
+
+            if len(features) < 1:
+                continue
+
+            pos = features[0]
+
+            is_excluded_pos = any(ex in pos for ex in excluded_pos)
+            is_excluded_word = surface in excluded_words
+            is_too_short = len(surface) <= 1
+
+            if not is_excluded_pos and not is_excluded_word and not is_too_short:
+                words.append(surface)
+
+        return words
 
     def calculate_word_overlap(self, text1, text2):
         words1 = self.tokenize_japanese(text1)
