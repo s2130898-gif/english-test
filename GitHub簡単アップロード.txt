@@ -1,0 +1,161 @@
+========================================
+📤 GitHub超簡単アップロード手順
+========================================
+
+初心者でもできる！ブラウザだけでOK！
+
+
+【準備】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GitHubアカウントを作成（無料）:
+https://github.com/signup
+
+所要時間: 3分
+
+
+【手順】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ステップ1: 新しいリポジトリを作成
+----------------------------------------
+
+1. GitHubにログイン
+   https://github.com/
+
+2. 右上の「+」ボタンをクリック
+
+3. 「New repository」を選択
+
+4. 以下を入力:
+   ┌─────────────────────────────┐
+   │ Repository name: *必須       │
+   │ english-quiz-system         │
+   │                             │
+   │ Description: (任意)          │
+   │ 英語クイズシステム            │
+   │                             │
+   │ ● Public (誰でも見れる)      │
+   │ ○ Private (自分だけ)        │
+   │                             │
+   │ ☐ Add a README file         │
+   │   (チェック不要)             │
+   └─────────────────────────────┘
+
+5. 「Create repository」をクリック
+
+
+ステップ2: ファイルをアップロード
+----------------------------------------
+
+6. 画面に表示される
+   「uploading an existing file」をクリック
+
+7. エクスプローラーを開く
+
+8. 以下のフォルダを開く:
+   C:\Users\山城大致\Documents\RAGシステム完全パッケージ\english-quiz-system
+
+9. 以下のファイルを選択:
+   ✓ streamlit_english_quiz.py
+   ✓ english_quiz_system.py
+   ✓ simple_vector_store.py
+   ✓ simple_embeddings.py
+   ✓ create_sample_data.py
+   ✓ requirements.txt
+   ✓ .gitignore
+   ✓ packages.txt
+   ✓ README.md
+
+   【選択方法】
+   Ctrl を押しながら各ファイルをクリック
+
+10. 選択したファイルをドラッグして
+    GitHubのブラウザ画面にドロップ
+
+11. アップロード完了を待つ（数秒）
+
+12. 下部の入力欄:
+    ┌─────────────────────────────┐
+    │ Commit changes              │
+    │                             │
+    │ Add files via upload        │
+    │ (そのままでOK)               │
+    └─────────────────────────────┘
+
+13. 「Commit changes」をクリック
+
+完了！
+
+
+【確認】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+リポジトリ画面に以下のファイルが表示されていればOK:
+
+english-quiz-system/
+├── streamlit_english_quiz.py
+├── english_quiz_system.py
+├── simple_vector_store.py
+├── simple_embeddings.py
+├── create_sample_data.py
+├── requirements.txt
+├── .gitignore
+├── packages.txt
+└── README.md
+
+
+【次のステップ】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+「Webアプリ公開手順.txt」の
+【ステップ2: Streamlit Cloudでデプロイ】
+に進んでください。
+
+
+【トラブルシューティング】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: ファイルが選択できない
+A: 隠しファイルが表示されていない可能性
+   エクスプローラーで:
+   「表示」→「隠しファイル」をチェック
+
+Q: .gitignore が見えない
+A: 問題ありません。アップロードされていれば
+   GitHubの画面で確認できます
+
+Q: アップロードが失敗する
+A: ファイルサイズが大きすぎる可能性
+   （このプロジェクトは問題なし）
+
+Q: 間違えてアップロードした
+A: GitHubで該当ファイルを開いて
+   右上のゴミ箱アイコンで削除できます
+
+
+【補足: GitHub Desktopを使う場合】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+より高度な管理をしたい場合:
+
+1. GitHub Desktopをダウンロード:
+   https://desktop.github.com/
+
+2. インストール後、GitHubでログイン
+
+3. 「Clone repository」→作成したリポジトリを選択
+
+4. ローカルフォルダにファイルをコピー
+
+5. GitHub Desktopで:
+   - 変更を確認
+   - Commit message入力
+   - 「Commit to main」
+   - 「Push origin」
+
+この方法なら更新も簡単！
+
+
+========================================
+  次は Webアプリ公開手順.txt へ！
+========================================

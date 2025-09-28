@@ -1,0 +1,275 @@
+========================================
+🌐 Streamlit Cloud で Webアプリ公開
+========================================
+
+このガイドに従えば、あなたの英語クイズシステムが
+インターネット上で誰でもアクセスできるWebアプリになります！
+
+【完成イメージ】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ https://your-app.streamlit.app でアクセス可能
+✅ ユーザーはブラウザだけでOK（Python不要）
+✅ URL共有だけで使える
+✅ 完全無料
+
+
+【必要なもの】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ GitHubアカウント（無料）
+  https://github.com/signup
+
+✓ Streamlit Cloudアカウント（無料）
+  https://streamlit.io/cloud
+
+✓ インターネット接続
+
+所要時間：約10分
+
+
+【ステップ1: GitHubにアップロード】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. GitHubにログイン
+   https://github.com/
+
+2. 右上の「+」→「New repository」をクリック
+
+3. リポジトリ設定:
+   ┌─────────────────────────────┐
+   │ Repository name:            │
+   │ english-quiz-system         │
+   │                             │
+   │ Description:                │
+   │ English Quiz with RAG       │
+   │                             │
+   │ ☑ Public                    │
+   │ ☐ Private                   │
+   │                             │
+   │ ☐ Add README                │
+   └─────────────────────────────┘
+
+4. 「Create repository」をクリック
+
+5. 画面に表示される手順に従う:
+
+   【方法A: GitHub Desktop（簡単）】
+   ----------------------------------------
+   a. GitHub Desktopをダウンロード:
+      https://desktop.github.com/
+
+   b. インストール後、GitHubアカウントでログイン
+
+   c. 「Clone a repository」→ 作成したリポジトリを選択
+
+   d. ローカルの保存先を選択
+
+   e. エクスプローラーで以下のファイルをコピー:
+
+      コピー元:
+      C:\Users\山城大致\Documents\RAGシステム完全パッケージ\english-quiz-system\
+
+      コピーするファイル（必須）:
+      ✓ streamlit_english_quiz.py
+      ✓ english_quiz_system.py
+      ✓ simple_vector_store.py
+      ✓ simple_embeddings.py
+      ✓ create_sample_data.py
+      ✓ requirements.txt
+      ✓ .gitignore
+      ✓ packages.txt
+      ✓ README.md
+
+      コピー先:
+      （GitHub Desktopで設定したローカルフォルダ）
+
+   f. GitHub Desktopで:
+      - 左下の「Summary」に: Initial commit
+      - 「Commit to main」をクリック
+      - 「Push origin」をクリック
+
+   完了！
+
+   【方法B: Webブラウザで直接アップロード（もっと簡単）】
+   ----------------------------------------
+   a. GitHubのリポジトリ画面で
+      「uploading an existing file」をクリック
+
+   b. 以下のファイルをドラッグ&ドロップ:
+      ✓ streamlit_english_quiz.py
+      ✓ english_quiz_system.py
+      ✓ simple_vector_store.py
+      ✓ simple_embeddings.py
+      ✓ create_sample_data.py
+      ✓ requirements.txt
+      ✓ .gitignore
+      ✓ packages.txt
+      ✓ README.md
+
+   c. 下部の「Commit changes」をクリック
+
+   完了！
+
+
+【ステップ2: Streamlit Cloudでデプロイ】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Streamlit Cloudにアクセス:
+   https://share.streamlit.io/
+
+2. 「Sign in」→「Continue with GitHub」
+
+3. GitHubアカウントで認証
+
+4. 「New app」をクリック
+
+5. アプリ設定:
+   ┌─────────────────────────────┐
+   │ Repository:                 │
+   │ your-username/              │
+   │ english-quiz-system         │
+   │                             │
+   │ Branch:                     │
+   │ main                        │
+   │                             │
+   │ Main file path:             │
+   │ streamlit_english_quiz.py   │
+   └─────────────────────────────┘
+
+6. 「Deploy!」をクリック
+
+7. デプロイ開始（2-3分待つ）:
+   ┌─────────────────────────────┐
+   │ ⏳ Building...              │
+   │                             │
+   │ Installing dependencies     │
+   │ Creating sample data        │
+   │ Starting app                │
+   └─────────────────────────────┘
+
+8. 完成！
+   ┌─────────────────────────────┐
+   │ ✅ Your app is live!        │
+   │                             │
+   │ 🌐 URL:                     │
+   │ https://your-app.           │
+   │    streamlit.app            │
+   └─────────────────────────────┘
+
+
+【ステップ3: URLを共有】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+あなたのアプリURL:
+https://your-username-english-quiz-system.streamlit.app
+
+このURLを共有するだけで、誰でもアクセスできます！
+
+
+【初回起動について】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+初回アクセス時、自動的に50個のサンプルデータが
+作成されます。少し時間がかかりますが、
+2回目以降は高速に動作します。
+
+
+【アプリの更新方法】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+コードを修正した場合:
+
+1. GitHubのリポジトリで該当ファイルを開く
+
+2. 右上の鉛筆アイコン（Edit）をクリック
+
+3. コードを編集
+
+4. 「Commit changes」をクリック
+
+5. 自動的にStreamlit Cloudが再デプロイ
+
+
+【トラブルシューティング】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: デプロイが失敗する
+A: requirements.txtが正しいか確認
+   以下の内容になっているか:
+
+   streamlit>=1.28.0
+   numpy>=1.24.0
+
+Q: アプリが起動しない
+A: Main file pathが正しいか確認:
+   streamlit_english_quiz.py
+
+Q: データが表示されない
+A: create_sample_data.pyが含まれているか確認
+   初回起動時に自動実行されます
+
+Q: エラーが出る
+A: Streamlit Cloudのログを確認:
+   右下の「Manage app」→「Logs」
+
+Q: アプリを削除したい
+A: Streamlit Cloudで:
+   「Manage app」→「Settings」→「Delete app」
+
+
+【カスタムドメイン設定（任意）】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+独自ドメインを使いたい場合:
+
+1. Streamlit Cloudで「Settings」
+
+2. 「Custom subdomain」に好きな名前を入力:
+   例: my-english-quiz
+
+3. URLが変更されます:
+   https://my-english-quiz.streamlit.app
+
+
+【無料プランの制限】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Streamlit Cloud無料プラン:
+✓ 1アカウント1アプリまで無料
+✓ リソース制限あり（通常の使用には十分）
+✓ 7日間アクセスがないとスリープモード
+  （再アクセス時に自動起動）
+
+
+【公開範囲の設定】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+デフォルト: 全世界に公開
+
+限定公開にしたい場合:
+1. GitHubリポジトリをPrivateに変更
+2. Streamlit Cloudで認証を追加
+   （有料プランが必要）
+
+
+【セキュリティ】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ パスワードやAPIキーは含まれていません
+✅ ユーザーデータは保存されません
+✅ 完全にステートレス
+✅ 安全に公開できます
+
+
+【サポート】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Streamlit公式ドキュメント:
+https://docs.streamlit.io/
+
+コミュニティフォーラム:
+https://discuss.streamlit.io/
+
+
+========================================
+  これで世界中に公開できます！
+========================================
+
+アプリURL: https://your-app.streamlit.app
