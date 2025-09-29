@@ -1,5 +1,5 @@
 """
-DistilBERT ベースのAI埋め込みモデル
+DistilBERT ベースのAI埋め込みモデル（修正版）
 多言語対応（日本語・英語）のディープラーニングモデル
 """
 import numpy as np
@@ -41,7 +41,17 @@ class SimpleEmbeddings:
 
                 outputs = self.model(**inputs)
 
-                embedding = outputs.last_hidden_state[:, 0, :].squeeze().numpy()
+                # 修正: Mean poolingを使用（全トークンの平均）
+                attention_mask = inputs['attention_mask']
+                hidden_states = outputs.last_hidden_state
+
+                # マスクを適用して平均を計算
+                masked_embeddings = hidden_states * attention_mask.unsqueeze(-1)
+                sum_embeddings = masked_embeddings.sum(dim=1)
+                sum_mask = attention_mask.sum(dim=1, keepdim=True)
+
+                # ゼロ除算を防ぐ
+                embedding = (sum_embeddings / sum_mask.clamp(min=1e-9)).squeeze().numpy()
 
                 embeddings.append(embedding)
 
