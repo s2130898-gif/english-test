@@ -1,42 +1,59 @@
-"""
-日本語対応Sentence-BERTモデル（改善版）
-"""
-import numpy as np
-from typing import List
-from sentence_transformers import SentenceTransformer
-import re
+  """
+  DistilBERT ベースのAI埋め込みモデル
+  多言語対応（日本語・英語）のディープラーニングモデル
+  """
+  import numpy as np
+  from typing import List
+  import torch
+  from transformers import AutoTokenizer, AutoModel
 
-class SimpleEmbeddings:
-    def __init__(self):
-        print("📦 日本語対応AI埋め込みモデルをロード中...")
+  class SimpleEmbeddings:
+      """DistilBERTを使ったAI埋め込みモデル"""
 
-        # 日本語モデルを使用
-        try:
-            model_name = 'sonoisa/sentence-bert-base-ja-mean-tokens-v2'
-            self.model = SentenceTransformer(model_name)
-            print(f"✅ {model_name}をロードしました")
-        except:
-            model_name = 'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2'
-            self.model = SentenceTransformer(model_name)
-            print(f"✅ {model_name}をロードしました")
+      def __init__(self):
+          print("📦 AI埋め込みモデルをロード中...")
+          print("⚠️ 初回起動時は3-4分かかります...")
 
-        self.dimension = 768
+          model_name = 'distilbert-base-multilingual-cased'
 
-    def preprocess_japanese(self, text):
-        """日本語テキストの前処理"""
-        # 助詞を削除（簡易版）
-        particles = ['は', 'が', 'を', 'に', 'へ', 'と', 'から', 'まで', 'で', 'の']
-        for p in particles:
-            text = text.replace(p, ' ')
-        # 連続するスペースを1つに
-        text = re.sub(r'\s+', ' ', text)
-        return text.strip()
+          self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+          self.model = AutoModel.from_pretrained(model_name)
 
-    def encode(self, texts):
-        # 前処理を適用
-        processed_texts = [self.preprocess_japanese(t) for t in texts]
-        return self.model.encode(processed_texts)
+          self.model.eval()
 
-    def encode_single(self, text):
-        processed = self.preprocess_japanese(text)
-        return self.model.encode([processed])[0].tolist()
+          self.dimension = 768
+
+          print("✅ DistilBERT多言語モデル (768次元) をロードしました")
+          print("🤖 ディープラーニングによるAI採点が有効です")
+
+      def encode(self, texts: List[str]) -> np.ndarray:
+          embeddings = []
+
+          with torch.no_grad():
+              for text in texts:
+                  inputs = self.tokenizer(
+                      text,
+                      return_tensors='pt',
+                      truncation=True,
+                      max_length=512,
+                      padding=True
+                  )
+
+                  outputs = self.model(**inputs)
+
+                  # Mean poolingを使用（改善版）
+                  attention_mask = inputs['attention_mask']
+                  hidden_states = outputs.last_hidden_state
+
+                  masked_embeddings = hidden_states * attention_mask.unsqueeze(-1)
+                  sum_embeddings = masked_embeddings.sum(dim=1)
+                  sum_mask = attention_mask.sum(dim=1, keepdim=True)
+
+                  embedding = (sum_embeddings / sum_mask.clamp(min=1e-9)).squeeze().numpy()
+
+                  embeddings.append(embedding)
+
+          return np.array(embeddings)
+
+      def encode_single(self, text: str) -> List[float]:
+          return self.encode([text])[0].tolist()
